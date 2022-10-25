@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 
 import {
   Transaction,
@@ -30,15 +29,19 @@ const TransactionsList: React.FC<Props> = ({
   setCurrentPage,
 }) => {
   const user = useSelector((state: RootState) => state.auth.user);
-  const { selectedTransactionId } = useParams();
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loadingTransactions, setLoadingTransactions] = useState(true);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction>();
   const [pagination, setPagination] = useState<Pagination>({
     limit: 0,
     offset: 0,
     total: 0,
   });
+
+  useEffect(() => {
+    setSelectedTransaction(undefined);
+  }, [transactions]);
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -68,19 +71,26 @@ const TransactionsList: React.FC<Props> = ({
   const transactionItems = loadingTransactions
     ? Array.from(Array(10)).map((_, idx) => <TransactionItem key={idx} />)
     : transactions.map((transaction) => (
-        <TransactionItem transaction={transaction} key={transaction.id} />
+        <TransactionItem
+          transaction={transaction}
+          key={transaction.id}
+          setSelectedTransaction={setSelectedTransaction}
+        />
       ));
 
   return (
-    <div>
-      <PageSelector
-        perPage={pagination.limit}
-        offset={pagination.offset}
-        total={pagination.total}
-        setCurrentPage={setCurrentPage}
-      />
-      <ul>{transactionItems}</ul>
-    </div>
+    <>
+      <div>
+        <PageSelector
+          perPage={pagination.limit}
+          offset={pagination.offset}
+          total={pagination.total}
+          setCurrentPage={setCurrentPage}
+        />
+        <ul>{transactionItems}</ul>
+      </div>
+      {selectedTransaction && <div>Selected {selectedTransaction.id}</div>}
+    </>
   );
 };
 

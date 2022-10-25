@@ -35,14 +35,6 @@ function App() {
         <Route path={ROUTES.unprotected.HOME} element={<Home />} />
         <Route path={ROUTES.unprotected.LOGIN} element={<Login />} />
         <Route
-          path={`${ROUTES.protected.DASHBOARD}/:selectedTransactionId`}
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path={ROUTES.protected.DASHBOARD}
           element={
             <ProtectedRoute>

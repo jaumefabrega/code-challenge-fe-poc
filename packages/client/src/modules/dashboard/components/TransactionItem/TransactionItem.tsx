@@ -2,13 +2,27 @@ import { Transaction } from "../../../../../../lib-common/types";
 
 type Props = {
   transaction?: Transaction;
+  setSelectedTransaction?: React.Dispatch<
+    React.SetStateAction<Transaction | undefined>
+  >;
 };
 
-const TransactionItem: React.FC<Props> = ({ transaction }) => {
+const TransactionItem: React.FC<Props> = ({
+  transaction,
+  setSelectedTransaction,
+}) => {
   if (!transaction) return <li className="transactionSkeleton">Loading...</li>;
 
   return (
-    <li key={transaction.id} style={{ display: "flex", columnGap: 8 }}>
+    <li
+      key={transaction.id}
+      onClick={
+        setSelectedTransaction
+          ? () => setSelectedTransaction(transaction)
+          : undefined
+      }
+      style={{ display: "flex", columnGap: 8 }}
+    >
       <img
         src={transaction.merchantIconUrl}
         style={{ width: 16, height: 16 }}

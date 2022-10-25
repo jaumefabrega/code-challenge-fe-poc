@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 
 import {
   TransactionStatus,
@@ -13,8 +12,6 @@ export type FetchFilters = {
 };
 
 const Dashboard: React.FC = () => {
-  const { selectedTransactionId } = useParams();
-
   const [fetchFilters, setFetchFilters] = useState<FetchFilters>({
     selectedStatus: TransactionStatusEnum.Completed,
     selectedPage: 0,
@@ -47,7 +44,6 @@ const Dashboard: React.FC = () => {
         }
         fetchFilters={fetchFilters}
       />
-      <h2>Selected transaction id: {selectedTransactionId}</h2>
     </div>
   );
 };
