@@ -1,7 +1,7 @@
 import {
   Transaction,
   TransactionStatus,
-} from '@finmid/lib-common/types/Transaction';
+} from "@finmid/lib-common/types/Transaction";
 
 export class TransactionService {
   readonly data: Transaction[];
@@ -61,9 +61,10 @@ export class TransactionService {
 
     const startIndex = this.offset;
     const endIndex = this.offset + this.limit;
+    const total = result.length;
 
     result = result.slice(startIndex, endIndex);
 
-    return result;
+    return { transactions: result, total };
   }
 }

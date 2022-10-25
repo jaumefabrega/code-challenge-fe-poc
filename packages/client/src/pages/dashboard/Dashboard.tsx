@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import {
@@ -7,37 +6,47 @@ import {
   TransactionStatusEnum,
 } from "../../../../lib-common/types";
 import TransactionsList from "../../modules/dashboard/components/TransactionsList/TransactionsList";
-import { RootState } from "../../redux/store";
+
+export type FetchFilters = {
+  selectedStatus: TransactionStatus;
+  selectedPage: number;
+};
 
 const Dashboard: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
   const { selectedTransactionId } = useParams();
 
-  const [selectedStatus, setSelectedStatus] = useState<TransactionStatus>(
-    TransactionStatusEnum.Completed
-  );
+  const [fetchFilters, setFetchFilters] = useState<FetchFilters>({
+    selectedStatus: TransactionStatusEnum.Completed,
+    selectedPage: 0,
+  });
 
   const handleStatusChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { value } = event.target;
-    setSelectedStatus(value as TransactionStatus);
+    setFetchFilters({
+      selectedPage: 0,
+      selectedStatus: value as TransactionStatus,
+    });
   };
 
   return (
     <div>
       <h3>Dashboard</h3>
-      {user?.name}
-      <br />
-      <br />
-      <select onChange={handleStatusChange} value={selectedStatus}>
+      <select onChange={handleStatusChange} value={fetchFilters.selectedStatus}>
         {Object.entries(TransactionStatusEnum).map(([key, value]) => (
           <option value={value} key={value}>
             {key}
           </option>
         ))}
       </select>
-      <TransactionsList selectedStatus={selectedStatus} />
+      <TransactionsList
+        selectedStatus={fetchFilters.selectedStatus}
+        setCurrentPage={(page: number) =>
+          setFetchFilters((prev) => ({ ...prev, selectedPage: page }))
+        }
+        fetchFilters={fetchFilters}
+      />
       <h2>Selected transaction id: {selectedTransactionId}</h2>
     </div>
   );

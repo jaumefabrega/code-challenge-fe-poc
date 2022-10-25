@@ -1,12 +1,12 @@
-import { Request, Response } from 'express';
-import { z } from 'zod';
-import data from 'src/data/transactions.json';
+import { Request, Response } from "express";
+import { z } from "zod";
+import data from "src/data/transactions.json";
 import {
   Transaction,
   TransactionStatusEnum,
-} from '@finmid/lib-common/types/Transaction';
-import { validateRequest, numericString } from 'src/lib/validation';
-import { TransactionService } from 'src/services';
+} from "@finmid/lib-common/types/Transaction";
+import { validateRequest, numericString } from "src/lib/validation";
+import { TransactionService } from "src/services";
 
 const getTransactions = async (req: Request, res: Response) => {
   const statusArray = Object.values(TransactionStatusEnum);
@@ -31,7 +31,7 @@ const getTransactions = async (req: Request, res: Response) => {
     query: { status, userId, limit, offset },
   } = validateRequest(transactionQueryValidation, req);
 
-  const transactions = new TransactionService(data as Transaction[])
+  const { transactions, total } = new TransactionService(data as Transaction[])
     .setLimit(limit)
     .setSmeId(smeId)
     .setStatus(status)
@@ -47,6 +47,7 @@ const getTransactions = async (req: Request, res: Response) => {
       status,
       userId,
       smeId,
+      total,
     },
   });
 };

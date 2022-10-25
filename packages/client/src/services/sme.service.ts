@@ -21,16 +21,22 @@ async function fetchSME(): Promise<SME> {
 
 async function fetchTransactions(
   userId: string,
-  status: TransactionStatus
-): Promise<Transaction[]> {
+  status: TransactionStatus,
+  page: number
+): Promise<{
+  data: Transaction[];
+  meta: { limit: number; offset: number; total: number };
+}> {
   return smeAxios
     .get(`/transactions`, {
       params: {
         userId,
         status,
+        offset: page * 10,
+        limit: 10,
       },
     })
-    .then((res) => res.data.data);
+    .then((res) => res.data);
 }
 
 export const smeService = {
