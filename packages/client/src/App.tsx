@@ -1,34 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Routes, Route, Link } from "react-router-dom";
 
+import ProtectedRoute from "./modules/auth/components/ProtectedRoute/ProtectedRoute";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Home from "./pages/home/Home";
+import Login from "./pages/login/Login";
+import { logout } from "./redux/auth.redux";
+import { ROUTES } from "./routes";
+import { smeAxios } from "./services/sme.service";
+
+import "./App.css";
 function App() {
-  const [count, setCount] = useState(0)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    smeAxios.interceptors.response.clear();
+    smeAxios.interceptors.response.use(
+      (res) => res,
+      (error) => {
+        if (error.response.status === 401) {
+          dispatch(logout());
+        }
+      }
+    );
+  }, []);
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ul>
+        <li>
+          <Link to={ROUTES.unprotected.LOGIN}>Login</Link>
+        </li>
+        <li>
+          <Link to={ROUTES.protected.DASHBOARD}>Dashboard</Link>
+        </li>
+      </ul>
+      <Routes>
+        <Route path={ROUTES.unprotected.HOME} element={<Home />} />
+        <Route path={ROUTES.unprotected.LOGIN} element={<Login />} />
+        <Route
+          path={`${ROUTES.protected.DASHBOARD}/:selectedTransactionId`}
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.protected.DASHBOARD}
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
