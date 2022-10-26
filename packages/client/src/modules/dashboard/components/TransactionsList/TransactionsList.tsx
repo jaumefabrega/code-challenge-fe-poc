@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import { Transaction } from "../../../../../../lib-common/types";
 import {
-  Transaction,
-  TransactionStatus,
-} from "../../../../../../lib-common/types";
-import { FetchFilters } from "../../../../pages/dashboard/Dashboard";
+  FetchFilters,
+  FilterTransactionStatus,
+} from "../../../../pages/dashboard/Dashboard";
 import { RootState } from "../../../../redux/store";
 import { smeService } from "../../../../services/sme.service";
 import PageSelector from "../PageSelector/PageSelector";
@@ -18,7 +18,7 @@ export type Pagination = {
 };
 
 type Props = {
-  selectedStatus: TransactionStatus;
+  selectedStatus?: FilterTransactionStatus;
   fetchFilters: FetchFilters;
   setCurrentPage: (p: number) => void;
 };
@@ -52,9 +52,8 @@ const TransactionsList: React.FC<Props> = ({
             data: transactions,
             meta: { limit, total, offset },
           } = await smeService.fetchTransactions(
-            user.id,
-            selectedStatus,
-            fetchFilters.selectedPage
+            fetchFilters.selectedPage,
+            selectedStatus
           );
           setTransactions(transactions);
           setPagination({ limit, total, offset });
