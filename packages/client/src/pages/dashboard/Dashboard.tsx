@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SegmentedControl } from "@mantine/core";
 
 import {
   TransactionStatus,
@@ -15,10 +16,10 @@ export type FilterTransactionStatus =
   | Exclude<TransactionStatus, typeof TransactionStatusEnum.Reversed>;
 
 const fetchableTransactionStatuses = [
-  ["All", transactionStatusAll],
-  ...Object.entries(TransactionStatusEnum).filter(
-    ([_, value]) => value !== TransactionStatusEnum.Reversed
-  ),
+  { label: "ALL", value: transactionStatusAll },
+  ...Object.entries(TransactionStatusEnum)
+    .map(([label, value]) => ({ label, value }))
+    .filter((entry) => entry.value !== TransactionStatusEnum.Reversed),
 ];
 
 export type FetchFilters = {
@@ -32,10 +33,7 @@ const Dashboard: React.FC = () => {
     selectedPage: 0,
   });
 
-  const handleStatusChange = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { value } = event.target;
+  const handleStatusChange = async (value: string) => {
     const newValue = value === transactionStatusAll ? undefined : value;
     setFetchFilters({
       selectedPage: 0,
@@ -45,14 +43,16 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <h3>Dashboard</h3>
-      <select onChange={handleStatusChange} value={fetchFilters.selectedStatus}>
-        {fetchableTransactionStatuses.map(([key, value]) => (
-          <option value={value} key={value}>
-            {key}
-          </option>
-        ))}
-      </select>
+      <h3>Transactions</h3>
+      <SegmentedControl
+        data={fetchableTransactionStatuses}
+        value={
+          fetchFilters.selectedStatus === undefined
+            ? transactionStatusAll
+            : fetchFilters.selectedStatus
+        } // FIX: use "ALL" instead and filter directly in the api (cleaner)
+        onChange={handleStatusChange}
+      />
       <TransactionsList
         selectedStatus={fetchFilters.selectedStatus}
         setCurrentPage={(page: number) =>

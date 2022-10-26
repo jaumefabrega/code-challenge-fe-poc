@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Drawer } from "@mantine/core";
 
 import { Transaction } from "../../../../../../lib-common/types";
 import {
@@ -89,9 +90,13 @@ const TransactionsList: React.FC<Props> = ({
         />
         <ul>{transactionItems}</ul>
       </div>
-      {selectedTransaction && (
+      <Drawer
+        opened={!!selectedTransaction}
+        onClose={() => setSelectedTransaction(undefined)}
+        position="right"
+      >
         <SelectedTransaction transaction={selectedTransaction} />
-      )}
+      </Drawer>
     </>
   );
 };

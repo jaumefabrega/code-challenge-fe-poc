@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { Button, PasswordInput, TextInput } from "@mantine/core";
 
 import { login } from "../../redux/auth.redux";
 import { RootState } from "../../redux/store";
@@ -63,25 +64,24 @@ const Login: React.FC = () => {
     <section>
       <h3>Login</h3>
       <form onSubmit={handleSubmit}>
-        <input
+        <TextInput
           type="email"
           placeholder="email"
           name="email"
           value={formState.email}
           onChange={handleChange}
-          autoComplete="off"
           ref={emailFieldRef}
-          autoFocus
         />
-        <input
-          type="password"
+        <PasswordInput
           placeholder="password"
+          label="Password"
           name="password"
           value={formState.password}
           onChange={handleChange}
-          autoComplete="off"
         />
-        <input type="submit" value="Login" disabled={validateForm()} />
+        <Button type="submit" disabled={validateForm()}>
+          Login
+        </Button>
       </form>
     </section>
   );
