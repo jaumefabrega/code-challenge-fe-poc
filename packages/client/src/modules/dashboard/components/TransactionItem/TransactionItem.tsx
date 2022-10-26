@@ -1,4 +1,7 @@
 import { Transaction } from "../../../../../../lib-common/types";
+import FormattedDate from "../../../common/components/FormattedDate/FormattedDate";
+import PaymentAmount from "../../../common/components/PaymentAmount/PaymentAmount";
+import TransactionStatusChip from "../../../common/components/TransactionStatusChip/TransactionStatusChip";
 
 type Props = {
   transaction?: Transaction;
@@ -23,15 +26,29 @@ const TransactionItem: React.FC<Props> = ({
       }
       style={{ display: "flex", columnGap: 8 }}
     >
-      <img
-        src={transaction.merchantIconUrl}
-        style={{ width: 16, height: 16 }}
+      <PaymentAmount
+        amount={+transaction.amount}
+        currency={transaction.currency}
       />
-      <div style={{ width: 120 }}>{transaction.merchantName}</div>
-      <div>{transaction.transactionTime}</div>
-      <div>
-        {transaction.amount} {transaction.currency}
+      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <img
+          src={transaction.merchantIconUrl}
+          style={{ width: 24, height: 24, borderRadius: "50%" }}
+        />
+        <div
+          style={{
+            width: 150,
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textAlign: "left",
+          }}
+        >
+          {transaction.merchantName}
+        </div>
       </div>
+      <FormattedDate date={new Date(transaction.transactionTime)} />
+      <TransactionStatusChip status={transaction.status} />
     </li>
   );
 };
