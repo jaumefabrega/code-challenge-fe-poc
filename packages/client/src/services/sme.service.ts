@@ -4,6 +4,7 @@ import type {
   SME,
   Transaction,
   TransactionStatus,
+  User,
 } from "../../../lib-common/types";
 
 const BASE_URL = "http://localhost:3000";
@@ -17,6 +18,10 @@ export const smeAxios = axios.create({
 
 async function fetchSME(): Promise<SME> {
   return smeAxios.get(`/sme-data`).then((res) => res.data);
+}
+
+async function fetchUsers(): Promise<User[]> {
+  return smeAxios.get(`/users`).then((res) => res.data);
 }
 
 async function fetchTransactions(
@@ -41,5 +46,6 @@ async function fetchTransactions(
 
 export const smeService = {
   fetchSME,
+  fetchUsers,
   fetchTransactions,
 };

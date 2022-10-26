@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./modules/common/components/Header/Header";
@@ -7,14 +6,14 @@ import ProtectedRoute from "./modules/common/components/ProtectedRoute/Protected
 import Dashboard from "./pages/dashboard/Dashboard";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
-import { logout } from "./redux/auth.redux";
 import { ROUTES } from "./routes";
 import { smeAxios } from "./services/sme.service";
 
 import "./App.css";
+import { useAuth } from "./hooks/useAuth";
 
 function App() {
-  const dispatch = useDispatch();
+  const { dispatchLogout } = useAuth();
 
   useEffect(() => {
     smeAxios.interceptors.response.clear();
@@ -22,7 +21,7 @@ function App() {
       (res) => res,
       (error) => {
         if (error.response.status === 401) {
-          dispatch(logout());
+          dispatchLogout();
         }
       }
     );

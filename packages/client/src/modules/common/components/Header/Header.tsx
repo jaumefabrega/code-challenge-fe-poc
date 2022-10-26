@@ -1,16 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { logout } from "../../../../redux/auth.redux";
 
-import { AppDispatch, RootState } from "../../../../redux/store";
+import { RootState } from "../../../../redux/store";
 import { ROUTES } from "../../../../routes";
+import LogoutButton from "../LogoutButton/LogoutButton";
 
 const Header: React.FC = () => {
   const { user, loggedIn } = useSelector((state: RootState) => state.auth);
   const { data: sme, fetching: fetchingSme } = useSelector(
     (state: RootState) => state.sme
   );
-  const dispatch = useDispatch<AppDispatch>();
 
   const { pathname } = useLocation();
   const link =
@@ -42,7 +41,7 @@ const Header: React.FC = () => {
           <>
             <div>{user?.name}</div>
             <div>
-              <button onClick={() => dispatch(logout())}>LOGOUT</button>
+              <LogoutButton />
             </div>
           </>
         ) : (

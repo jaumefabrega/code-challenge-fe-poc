@@ -52,7 +52,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: () => {
+    logoutPartial: () => {
       return getStateFromToken(null);
     },
     login: (_, action: PayloadAction<string>) => {
@@ -62,6 +62,6 @@ export const authSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { logout, login } = authSlice.actions;
+export const { logoutPartial, login } = authSlice.actions;
 
 export default authSlice.reducer;

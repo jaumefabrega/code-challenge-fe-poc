@@ -27,7 +27,9 @@ export const getSmeData = createAsyncThunk("sme/getSmeData", async () => {
 export const smeSlice = createSlice({
   name: "sme",
   initialState,
-  reducers: {},
+  reducers: {
+    clearSme: () => initialState,
+  },
   extraReducers(builder) {
     builder.addCase(getSmeData.pending, (state) => {
       state.fetching = true;
@@ -44,5 +46,8 @@ export const smeSlice = createSlice({
     });
   },
 });
+
+// Action creators are generated for each case reducer function
+export const { clearSme } = smeSlice.actions;
 
 export default smeSlice.reducer;
