@@ -9,6 +9,7 @@ import {
 import { RootState } from "../../../../redux/store";
 import { smeService } from "../../../../services/sme.service";
 import PageSelector from "../PageSelector/PageSelector";
+import SelectedTransaction from "../SelectedTransaction/SelectedTransaction";
 import TransactionItem from "../TransactionItem/TransactionItem";
 
 export type Pagination = {
@@ -88,7 +89,9 @@ const TransactionsList: React.FC<Props> = ({
         />
         <ul>{transactionItems}</ul>
       </div>
-      {selectedTransaction && <div>Selected {selectedTransaction.id}</div>}
+      {selectedTransaction && (
+        <SelectedTransaction transaction={selectedTransaction} />
+      )}
     </>
   );
 };
