@@ -9,11 +9,11 @@ import TransactionsList from "../../modules/dashboard/components/TransactionsLis
 
 import styles from "./dashboard.module.scss";
 
-const transactionStatusAll = "ALL";
+export const transactionStatusAll = "ALL";
 
 type TransactionStatusAll = typeof transactionStatusAll;
 
-export type FilterTransactionStatus =
+export type FilterableTransactionStatus =
   | TransactionStatusAll
   | Exclude<TransactionStatus, typeof TransactionStatusEnum.Reversed>;
 
@@ -25,21 +25,20 @@ const fetchableTransactionStatuses = [
 ];
 
 export type FetchFilters = {
-  selectedStatus?: FilterTransactionStatus;
+  selectedStatus?: FilterableTransactionStatus;
   selectedPage: number;
 };
 
 const Dashboard: React.FC = () => {
   const [fetchFilters, setFetchFilters] = useState<FetchFilters>({
-    selectedStatus: undefined,
+    selectedStatus: transactionStatusAll,
     selectedPage: 0,
   });
 
   const handleStatusChange = async (value: string) => {
-    const newValue = value === transactionStatusAll ? undefined : value;
     setFetchFilters({
       selectedPage: 0,
-      selectedStatus: newValue as FilterTransactionStatus,
+      selectedStatus: value as FilterableTransactionStatus,
     });
   };
 
@@ -49,11 +48,7 @@ const Dashboard: React.FC = () => {
       <div className={styles.content}>
         <SegmentedControl
           data={fetchableTransactionStatuses}
-          value={
-            fetchFilters.selectedStatus === undefined
-              ? transactionStatusAll
-              : fetchFilters.selectedStatus
-          } // FIX: use "ALL" instead and filter directly in the api (cleaner)
+          value={fetchFilters.selectedStatus}
           onChange={handleStatusChange}
           className={styles.statusFilter}
         />

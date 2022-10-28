@@ -5,7 +5,7 @@ import { Drawer } from "@mantine/core";
 import { Transaction } from "../../../../../../lib-common/types";
 import {
   FetchFilters,
-  FilterTransactionStatus,
+  FilterableTransactionStatus,
 } from "../../../../pages/dashboard/Dashboard";
 import { RootState } from "../../../../redux/store";
 import { smeService } from "../../../../services/sme.service";
@@ -23,7 +23,7 @@ export type Pagination = {
 };
 
 type Props = {
-  selectedStatus?: FilterTransactionStatus;
+  selectedStatus?: FilterableTransactionStatus;
   fetchFilters: FetchFilters;
   setCurrentPage: (p: number) => void;
 };
