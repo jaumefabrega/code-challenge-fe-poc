@@ -6,10 +6,10 @@ import { RootState } from "../../../../redux/store";
 
 const LogoutButton: React.FC = () => {
   const { loggedIn } = useSelector((state: RootState) => state.auth);
-
   const { dispatchLogout } = useAuth();
 
   if (!loggedIn) return null;
+
   return (
     <Button onClick={dispatchLogout} size="sm" variant="light" radius="lg">
       Logout

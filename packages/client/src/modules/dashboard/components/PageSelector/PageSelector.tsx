@@ -9,18 +9,20 @@ type Props = {
   setCurrentPage: (p: number) => void;
 };
 
-// I did not implement the ellipsis (eg "1 2 3 ... 40 41 42") functionality
+// A real page selector would have a lot more functionality
+// e.g. I did not implement the ellipsis (eg "1 2 3 ... 40 41 42") functionality
 const PageSelector: React.FC<Props> = ({
   perPage,
   offset,
   total,
   setCurrentPage,
 }) => {
-  const pages = Math.ceil(total / perPage);
+  const numOfPages = Math.ceil(total / perPage);
   const currentPage = Math.floor(offset / perPage);
-  if (!pages) return null;
 
-  const pagesArray = Array(pages).fill(undefined);
+  if (!numOfPages) return null;
+
+  const pagesArray = Array(numOfPages).fill(undefined);
 
   const pageElements = pagesArray.map((_, idx) => (
     <div

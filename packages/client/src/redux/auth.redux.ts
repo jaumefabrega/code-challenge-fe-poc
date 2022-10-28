@@ -61,7 +61,6 @@ export const authSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { logoutPartial, login } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -22,16 +22,17 @@ const initialFormState = {
 };
 
 const Login: React.FC = () => {
-  const [formState, setFormState] = useState<Form>(initialFormState);
   const dispatch = useDispatch();
   const location = useLocation();
-  const [loggingIn, setLoggingIn] = useState(false);
-
   const { loggedIn } = useSelector((state: RootState) => state.auth);
-
   const emailFieldRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [formState, setFormState] = useState<Form>(initialFormState);
+  const [loggingIn, setLoggingIn] = useState(false);
+
+  const handleInputChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = event.target;
     setFormState((prev) => ({
       ...prev,
@@ -78,7 +79,7 @@ const Login: React.FC = () => {
           label="Email"
           name="email"
           value={formState.email}
-          onChange={handleChange}
+          onChange={handleInputChange}
           ref={emailFieldRef}
         />
         <PasswordInput
@@ -86,7 +87,7 @@ const Login: React.FC = () => {
           label="Password"
           name="password"
           value={formState.password}
-          onChange={handleChange}
+          onChange={handleInputChange}
         />
         <Button
           type="submit"

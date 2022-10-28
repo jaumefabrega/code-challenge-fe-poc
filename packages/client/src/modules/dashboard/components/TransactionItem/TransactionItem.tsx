@@ -21,7 +21,7 @@ const TransactionItem: React.FC<Props> = ({
       onClick={() => setSelectedTransaction(transaction)}
       className={styles.container}
     >
-      <div className={styles.left}>
+      <div>
         <PaymentAmount
           amount={+transaction.amount}
           currency={transaction.currency}

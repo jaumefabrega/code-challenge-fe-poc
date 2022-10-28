@@ -11,27 +11,29 @@ type Props = {
 };
 
 const ProtectedRoute: React.FC<Props> = ({ children }) => {
-  const { user } = useSelector((state: RootState) => state.auth);
-  const { data: smeData, fetching: fetchingSme } = useSelector(
-    (state: RootState) => state.sme
-  );
-  const { data: users, fetching: fetchingUsers } = useSelector(
-    (state: RootState) => state.users
-  );
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
 
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { fetched: fetchedSme, fetching: fetchingSme } = useSelector(
+    (state: RootState) => state.sme
+  );
+  const { fetched: fetchedUsers, fetching: fetchingUsers } = useSelector(
+    (state: RootState) => state.users
+  );
+
   useEffect(() => {
-    const getSmeDatas = async () => {
+    const getProtectedData = async () => {
       if (user) {
-        if (!fetchingSme) dispatch(getSmeData()); // FIX: maybe add && !smeData
-        if (!fetchingUsers) dispatch(getUsersData()); // FIX: maybe add && !usersData
+        if (!fetchedSme && !fetchingSme) dispatch(getSmeData());
+        if (!fetchedUsers && !fetchingUsers) dispatch(getUsersData());
       }
     };
-    getSmeDatas();
+    getProtectedData();
   }, [user]);
 
   if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
+
   return children;
 };
 

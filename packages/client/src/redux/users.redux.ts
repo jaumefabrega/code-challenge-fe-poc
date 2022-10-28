@@ -9,12 +9,14 @@ import { smeService } from "../services/sme.service";
 
 type usersState = {
   data: User[];
+  fetched: boolean;
   fetching: boolean;
   error: SerializedError | null;
 };
 
 const initialState: usersState = {
   data: [],
+  fetched: false,
   fetching: false,
   error: null,
 };
@@ -38,16 +40,17 @@ export const usersSlice = createSlice({
     builder.addCase(getUsersData.fulfilled, (state, action) => {
       state.data = action.payload;
       state.error = null;
+      state.fetched = true;
       state.fetching = false;
     });
     builder.addCase(getUsersData.rejected, (state, action) => {
       state.error = action.error;
+      state.fetched = true;
       state.fetching = false;
     });
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { clearUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;

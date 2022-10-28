@@ -9,18 +9,13 @@ import styles from "./header.module.scss";
 
 const Header: React.FC = () => {
   const { user, loggedIn } = useSelector((state: RootState) => state.auth);
-  const { data: sme, fetching: fetchingSme } = useSelector(
-    (state: RootState) => state.sme
-  );
+  const { data: sme } = useSelector((state: RootState) => state.sme);
 
   return (
     <div className={styles.container}>
       <div>
         <Link to={ROUTES.unprotected.HOME}>
-          <img
-            className={styles.finmidLogo}
-            src="https://uploads-ssl.webflow.com/61cdc7bc549fbe2f335674dc/61e5ab75798c22114fee3780_Frame.svg"
-          />
+          <img className={styles.finmidLogo} src="/images/logo.svg" />
         </Link>
         <div className={styles.legalName}>{sme.legalName}</div>
       </div>

@@ -28,6 +28,12 @@ type Props = {
   setCurrentPage: (p: number) => void;
 };
 
+const initialPagination = {
+  limit: 0,
+  offset: 0,
+  total: 0,
+};
+
 const TransactionsList: React.FC<Props> = ({
   selectedStatus,
   fetchFilters,
@@ -38,15 +44,7 @@ const TransactionsList: React.FC<Props> = ({
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loadingTransactions, setLoadingTransactions] = useState(true);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction>();
-  const [pagination, setPagination] = useState<Pagination>({
-    limit: 0,
-    offset: 0,
-    total: 0,
-  });
-
-  useEffect(() => {
-    setSelectedTransaction(undefined);
-  }, [transactions]);
+  const [pagination, setPagination] = useState<Pagination>(initialPagination);
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -64,11 +62,13 @@ const TransactionsList: React.FC<Props> = ({
           setPagination({ limit, total, offset });
         } catch (error) {
           setTransactions([]);
+          setPagination(initialPagination);
         } finally {
           setLoadingTransactions(false);
         }
       }
     };
+
     getTransactions();
   }, [user, fetchFilters]);
 
