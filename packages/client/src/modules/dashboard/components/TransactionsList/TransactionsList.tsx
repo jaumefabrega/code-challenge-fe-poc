@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Drawer } from "@mantine/core";
+import { Drawer, Modal } from "@mantine/core";
 
 import { Transaction } from "../../../../../../lib-common/types";
 import {
@@ -45,6 +45,7 @@ const TransactionsList: React.FC<Props> = ({
   const [loadingTransactions, setLoadingTransactions] = useState(true);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction>();
   const [pagination, setPagination] = useState<Pagination>(initialPagination);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -63,6 +64,7 @@ const TransactionsList: React.FC<Props> = ({
         } catch (error) {
           setTransactions([]);
           setPagination(initialPagination);
+          setError(true);
         } finally {
           setLoadingTransactions(false);
         }
@@ -103,6 +105,14 @@ const TransactionsList: React.FC<Props> = ({
       >
         <SelectedTransaction transaction={selectedTransaction} />
       </Drawer>
+      <Modal
+        opened={error}
+        onClose={() => setError(false)}
+        title="Oopsie"
+        centered
+      >
+        <div>There was an error</div>
+      </Modal>
     </>
   );
 };
