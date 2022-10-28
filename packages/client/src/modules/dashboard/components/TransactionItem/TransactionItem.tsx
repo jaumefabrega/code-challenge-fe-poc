@@ -3,9 +3,11 @@ import FormattedDate from "../../../common/components/FormattedDate/FormattedDat
 import PaymentAmount from "../../../common/components/PaymentAmount/PaymentAmount";
 import TransactionStatusChip from "../../../common/components/TransactionStatusChip/TransactionStatusChip";
 
+import styles from "./transactionItem.module.scss";
+
 type Props = {
-  transaction?: Transaction;
-  setSelectedTransaction?: React.Dispatch<
+  transaction: Transaction;
+  setSelectedTransaction: React.Dispatch<
     React.SetStateAction<Transaction | undefined>
   >;
 };
@@ -14,42 +16,30 @@ const TransactionItem: React.FC<Props> = ({
   transaction,
   setSelectedTransaction,
 }) => {
-  if (!transaction) return <li className="transactionSkeleton">Loading...</li>;
-
   return (
-    <li
-      key={transaction.id}
-      onClick={
-        setSelectedTransaction
-          ? () => setSelectedTransaction(transaction)
-          : undefined
-      }
-      style={{ display: "flex", columnGap: 8 }}
+    <div
+      onClick={() => setSelectedTransaction(transaction)}
+      className={styles.container}
     >
-      <PaymentAmount
-        amount={+transaction.amount}
-        currency={transaction.currency}
-      />
-      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-        <img
-          src={transaction.merchantIconUrl}
-          style={{ width: 24, height: 24, borderRadius: "50%" }}
+      <div className={styles.left}>
+        <PaymentAmount
+          amount={+transaction.amount}
+          currency={transaction.currency}
+          className={styles.amount}
         />
-        <div
-          style={{
-            width: 150,
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textAlign: "left",
-          }}
-        >
-          {transaction.merchantName}
+        <div className={styles.merchant}>
+          <img src={transaction.merchantIconUrl} className={styles.logo} />
+          <div className={styles.name}>{transaction.merchantName}</div>
         </div>
       </div>
-      <FormattedDate date={new Date(transaction.transactionTime)} />
-      <TransactionStatusChip status={transaction.status} />
-    </li>
+      <div>
+        <FormattedDate
+          date={new Date(transaction.transactionTime)}
+          className={styles.date}
+        />
+        <TransactionStatusChip status={transaction.status} />
+      </div>
+    </div>
   );
 };
 

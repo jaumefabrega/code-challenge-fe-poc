@@ -1,0 +1,29 @@
+.container {
+  text-transform: capitalize;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  width: 80px;
+  padding: 0px 8px;
+  border-radius: 10px;
+}
+
+.COMPLETED {
+  background-color: #d2f0cd;
+  color: #3c5a38;
+}
+
+.REJECTED {
+  background-color: #ffc8c8;
+  color: #742a2a;
+}
+
+.PENDING {
+  background-color: #ffe9a2;
+  color: #8a6248;
+}
+
+.REVERSED {
+  background-color: #dad7d7;
+  color: #555555;
+}

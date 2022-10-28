@@ -1,0 +1,33 @@
+@import "../../../../styles/mixins";
+
+.container {
+  z-index: 5;
+  height: 56px;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  box-shadow: rgba(45, 45, 45, 0.16) 0px 0px 3px 1px;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.finmidLogo {
+  width: 80px;
+}
+
+@include mobileandtablet {
+  .legalName,
+  .userName {
+    display: none;
+  }
+}

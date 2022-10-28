@@ -7,6 +7,8 @@ import {
 } from "../../../../lib-common/types";
 import TransactionsList from "../../modules/dashboard/components/TransactionsList/TransactionsList";
 
+import styles from "./dashboard.module.scss";
+
 const transactionStatusAll = "ALL";
 
 type TransactionStatusAll = typeof transactionStatusAll;
@@ -42,24 +44,27 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div>
-      <h3>Transactions</h3>
-      <SegmentedControl
-        data={fetchableTransactionStatuses}
-        value={
-          fetchFilters.selectedStatus === undefined
-            ? transactionStatusAll
-            : fetchFilters.selectedStatus
-        } // FIX: use "ALL" instead and filter directly in the api (cleaner)
-        onChange={handleStatusChange}
-      />
-      <TransactionsList
-        selectedStatus={fetchFilters.selectedStatus}
-        setCurrentPage={(page: number) =>
-          setFetchFilters((prev) => ({ ...prev, selectedPage: page }))
-        }
-        fetchFilters={fetchFilters}
-      />
+    <div className={styles.container}>
+      <h1 className={styles.heading}>Transactions</h1>
+      <div className={styles.content}>
+        <SegmentedControl
+          data={fetchableTransactionStatuses}
+          value={
+            fetchFilters.selectedStatus === undefined
+              ? transactionStatusAll
+              : fetchFilters.selectedStatus
+          } // FIX: use "ALL" instead and filter directly in the api (cleaner)
+          onChange={handleStatusChange}
+          className={styles.statusFilter}
+        />
+        <TransactionsList
+          selectedStatus={fetchFilters.selectedStatus}
+          setCurrentPage={(page: number) =>
+            setFetchFilters((prev) => ({ ...prev, selectedPage: page }))
+          }
+          fetchFilters={fetchFilters}
+        />
+      </div>
     </div>
   );
 };

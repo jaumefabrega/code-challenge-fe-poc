@@ -1,0 +1,15 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 4px;
+
+  &:empty {
+    height: 250px;
+    background: url("/images/no_results.png") no-repeat center;
+    background-size: contain;
+    &::before {
+      content: "No results";
+    }
+  }
+}

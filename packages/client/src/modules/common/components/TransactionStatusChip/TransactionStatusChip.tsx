@@ -1,4 +1,8 @@
+import cn from "classnames";
+
 import { TransactionStatus } from "../../../../../../lib-common/types";
+
+import styles from "./transactionStatusChip.module.scss";
 
 type Props = {
   status: TransactionStatus;
@@ -7,7 +11,7 @@ type Props = {
 
 const TransactionStatusChip: React.FC<Props> = ({ status, className }) => {
   return (
-    <div className={className} style={{ textTransform: "capitalize" }}>
+    <div className={cn(styles.container, styles[status], className)}>
       {status.toLowerCase()}
     </div>
   );

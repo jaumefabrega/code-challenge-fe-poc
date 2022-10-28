@@ -2,11 +2,14 @@ import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import { Button, PasswordInput, TextInput } from "@mantine/core";
+import { IconKey } from "@tabler/icons";
 
 import { login } from "../../redux/auth.redux";
 import { RootState } from "../../redux/store";
 import { ROUTES } from "../../routes";
 import { authService } from "../../services/auth.service";
+
+import styles from "./login.module.scss";
 
 type Form = {
   email: string;
@@ -22,6 +25,8 @@ const Login: React.FC = () => {
   const [formState, setFormState] = useState<Form>(initialFormState);
   const dispatch = useDispatch();
   const location = useLocation();
+  const [loggingIn, setLoggingIn] = useState(false);
+
   const { loggedIn } = useSelector((state: RootState) => state.auth);
 
   const emailFieldRef = useRef<HTMLInputElement>(null);
@@ -36,6 +41,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoggingIn(true);
     const { email, password } = formState;
     try {
       const token = await authService.login(email, password);
@@ -44,6 +50,8 @@ const Login: React.FC = () => {
       alert(`${error}`);
       setFormState(initialFormState);
       if (emailFieldRef.current) emailFieldRef.current.focus();
+    } finally {
+      setLoggingIn(false);
     }
   };
 
@@ -61,12 +69,13 @@ const Login: React.FC = () => {
     );
 
   return (
-    <section>
+    <section className={styles.container}>
       <h3>Login</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <TextInput
           type="email"
           placeholder="email"
+          label="Email"
           name="email"
           value={formState.email}
           onChange={handleChange}
@@ -79,7 +88,14 @@ const Login: React.FC = () => {
           value={formState.password}
           onChange={handleChange}
         />
-        <Button type="submit" disabled={validateForm()}>
+        <Button
+          type="submit"
+          disabled={validateForm()}
+          loading={loggingIn}
+          leftIcon={<IconKey size={18} />}
+          loaderProps={{ size: "xs" }}
+          classNames={{ root: styles.button }}
+        >
           Login
         </Button>
       </form>

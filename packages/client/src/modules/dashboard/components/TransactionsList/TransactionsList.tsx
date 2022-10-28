@@ -12,6 +12,9 @@ import { smeService } from "../../../../services/sme.service";
 import PageSelector from "../PageSelector/PageSelector";
 import SelectedTransaction from "../SelectedTransaction/SelectedTransaction";
 import TransactionItem from "../TransactionItem/TransactionItem";
+import TransactionItemSkeleton from "../TransactionItem/TransactionItemSkeleton";
+
+import styles from "./transactionList.module.scss";
 
 export type Pagination = {
   limit: number;
@@ -70,7 +73,9 @@ const TransactionsList: React.FC<Props> = ({
   }, [user, fetchFilters]);
 
   const transactionItems = loadingTransactions
-    ? Array.from(Array(10)).map((_, idx) => <TransactionItem key={idx} />)
+    ? Array.from(Array(10)).map((_, idx) => (
+        <TransactionItemSkeleton key={idx} />
+      ))
     : transactions.map((transaction) => (
         <TransactionItem
           transaction={transaction}
@@ -81,19 +86,20 @@ const TransactionsList: React.FC<Props> = ({
 
   return (
     <>
-      <div>
-        <PageSelector
-          perPage={pagination.limit}
-          offset={pagination.offset}
-          total={pagination.total}
-          setCurrentPage={setCurrentPage}
-        />
-        <ul>{transactionItems}</ul>
-      </div>
+      <div className={styles.list}>{transactionItems}</div>
+      <PageSelector
+        perPage={pagination.limit}
+        offset={pagination.offset}
+        total={pagination.total}
+        setCurrentPage={setCurrentPage}
+      />
       <Drawer
         opened={!!selectedTransaction}
         onClose={() => setSelectedTransaction(undefined)}
         position="right"
+        overlayOpacity={0.7}
+        padding="xs"
+        lockScroll={false}
       >
         <SelectedTransaction transaction={selectedTransaction} />
       </Drawer>

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
+import { useAuth } from "./hooks/useAuth";
 import Header from "./modules/common/components/Header/Header";
 import ProtectedRoute from "./modules/common/components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -10,7 +11,7 @@ import { ROUTES } from "./routes";
 import { smeAxios } from "./services/sme.service";
 
 import "./App.css";
-import { useAuth } from "./hooks/useAuth";
+import styles from "./app.module.scss";
 
 function App() {
   const { dispatchLogout } = useAuth();
@@ -28,20 +29,22 @@ function App() {
   }, []);
 
   return (
-    <div className="App" style={{ width: "100%" }}>
+    <div className="App">
       <Header />
-      <Routes>
-        <Route path={ROUTES.unprotected.HOME} element={<Home />} />
-        <Route path={ROUTES.unprotected.LOGIN} element={<Login />} />
-        <Route
-          path={ROUTES.protected.DASHBOARD}
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <div className={styles.content}>
+        <Routes>
+          <Route path={ROUTES.unprotected.HOME} element={<Home />} />
+          <Route path={ROUTES.unprotected.LOGIN} element={<Login />} />
+          <Route
+            path={ROUTES.protected.DASHBOARD}
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
     </div>
   );
 }

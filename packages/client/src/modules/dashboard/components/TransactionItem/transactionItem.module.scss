@@ -1,0 +1,76 @@
+@import "../../../../styles/mixins";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 12px;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px #0000000d, 0 1px 2px #0000001a;
+
+  > div {
+    display: flex;
+    column-gap: 16px;
+
+    &:first-child {
+      max-width: calc(100% - 164px);
+      @include mobileandtablet {
+        max-width: none;
+      }
+    }
+  }
+
+  &:not(.skeleton) {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  @include mobileandtablet {
+    flex-direction: column;
+    gap: 16px;
+
+    > div {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+}
+
+.amount {
+  min-width: 100px;
+  text-align: right;
+  font-weight: bold;
+
+  @include mobileandtablet {
+    min-width: 0;
+  }
+}
+
+.merchant {
+  max-width: calc(100% - 116px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.3);
+  }
+
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.date {
+  font-size: 12px;
+  color: #999999;
+}

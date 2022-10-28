@@ -3,24 +3,28 @@ import { Transaction } from "../../../../../../lib-common/types";
 import { RootState } from "../../../../redux/store";
 import TransactionStatusChip from "../../../common/components/TransactionStatusChip/TransactionStatusChip";
 
+import styles from "./selectedTransaction.module.scss";
+
 type Props = {
   transaction?: Transaction;
 };
 
 const SelectedTransaction: React.FC<Props> = ({ transaction }) => {
-  const users = useSelector((state: RootState) => state.users.data);
-  const userName = users.find((u) => u.id === transaction?.userId)?.name;
+  if (!transaction) return null;
 
-  const formatedTime = transaction?.transactionTime
+  const users = useSelector((state: RootState) => state.users.data);
+  const userName = users.find((u) => u.id === transaction.userId)?.name;
+  const formatedTime = transaction.transactionTime
     ? new Date(transaction?.transactionTime).toUTCString()
     : "";
-  if (!transaction) return <div>CLOSED DRAWER</div>;
+  const shortenedId = transaction.id.substring(0, 7);
 
   return (
-    <div>
-      <h3>{formatedTime}</h3>
+    <div className={styles.container}>
+      <div className={styles.id}>ID {shortenedId}</div>
+      <div>{formatedTime}</div>
+      <div>{userName}</div>
       <TransactionStatusChip status={transaction.status} />
-      <h5>{userName}</h5>
     </div>
   );
 };

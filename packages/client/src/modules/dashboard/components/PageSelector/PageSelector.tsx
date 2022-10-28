@@ -1,4 +1,6 @@
-import { Pagination } from "../TransactionsList/TransactionsList";
+import cn from "classnames";
+
+import styles from "./pageSelector.module.scss";
 
 type Props = {
   perPage: number;
@@ -16,26 +18,30 @@ const PageSelector: React.FC<Props> = ({
 }) => {
   const pages = Math.ceil(total / perPage);
   const currentPage = Math.floor(offset / perPage);
-  const pageElements = pages
-    ? Array(pages)
-        .fill(undefined)
-        .map((_, idx) => (
-          <div
-            onClick={() => setCurrentPage(idx)}
-            style={{ color: idx === currentPage ? "red" : "black" }}
-            key={idx}
-          >
-            {idx + 1}
-          </div>
-        ))
-    : null;
+  if (!pages) return null;
 
-  return (
-    <div style={{ display: "flex", gap: 8 }}>
-      Pages:
-      {pageElements}
+  const pagesArray = Array(pages).fill(undefined);
+
+  const pageElements = pagesArray.map((_, idx) => (
+    <div
+      onClick={
+        idx === currentPage
+          ? undefined
+          : () => {
+              setCurrentPage(idx);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+      }
+      className={cn(styles.page, {
+        [styles.current]: idx === currentPage,
+      })}
+      key={idx}
+    >
+      {idx + 1}
     </div>
-  );
+  ));
+
+  return <div className={styles.container}>{pageElements}</div>;
 };
 
 export default PageSelector;
